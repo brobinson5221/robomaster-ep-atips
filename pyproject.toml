@@ -1,0 +1,50 @@
+[project]
+name = "robomaster-ep-atips"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = []
+
+[dependency-groups]
+dev = ["commitizen", "pre-commit", "ruff"]
+
+[tool.ruff]
+line-length = 100
+include = ["*.py"]
+exclude = [
+    ".venv",
+    "__pycache__",
+    ".ruff_cache",
+    "build",
+    "dist",
+    ".git",
+    ".github",
+    ".vscode",
+]
+
+select = ["ALL"]
+ignore = [
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D105",
+    "D106",
+    "D107",
+    "T201",
+    "W292",
+    "ANN001",
+    "ANN002",
+    "ANN201",
+    "ANN202",
+    "ANN204",
+    "ERA001",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+
+[tool.commitizen]
+name = "cz_conventional_commits"
