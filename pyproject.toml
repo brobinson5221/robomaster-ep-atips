@@ -1,11 +1,18 @@
 [project]
 name = "robomaster-ep-atips"
 version = "0.1.0"
-requires-python = ">=3.14"
-dependencies = []
+requires-python = ">=3.8"
+dependencies = [
+    "robomaster",
+]
 
 [dependency-groups]
-dev = ["commitizen", "pre-commit", "ruff"]
+dev = [
+    "commitizen",
+    "pre-commit",
+    "ruff",
+    "setuptools>=75.3.4",
+]
 
 [tool.ruff]
 line-length = 100
@@ -39,6 +46,7 @@ ignore = [
     "ANN202",
     "ANN204",
     "ERA001",
+    "CPY001",
 ]
 
 [tool.ruff.format]
@@ -48,3 +56,6 @@ line-ending = "auto"
 
 [tool.commitizen]
 name = "cz_conventional_commits"
+
+[tool.uv.sources]
+robomaster = { git = "https://github.com/dji-sdk/RoboMaster-SDK.git" }
