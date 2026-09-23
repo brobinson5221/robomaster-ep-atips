@@ -1,12 +1,10 @@
-import os
-from pathlib import Path
+from robomaster_runtime import robot
 
-sdk_root = Path(__file__).resolve().parents[1] / "RoboMaster-SDK"
+if __name__ == "__main__":
+    ep_robot = robot.Robot()
 
-_ffmpeg_dll = os.add_dll_directory(str(sdk_root / "lib" / "libmedia_codec" / "src" / "ffmpeg-dll"))
+    ep_robot.initialize(conn_type="ap")
 
-_opus_dll = os.add_dll_directory(str(sdk_root / "lib" / "libmedia_codec" / "src" / "opus-dll"))
-
-from robomaster import robot  # noqa: E402
-
-print("RoboMaster imported successfully")
+    version = ep_robot.get_version()
+    print("Robot version: {0}".format(version))
+    ep_robot.close()
