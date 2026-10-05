@@ -18,4 +18,4 @@ def run_blaster_tests():
     ep_robot.set_robot_mode(mode=robot.GIMBAL_LEAD)
 
     ep_blaster = ep_robot.blaster
-    ep_blaster.fire(times=1)
+    ep_blaster.fire(times=3)
