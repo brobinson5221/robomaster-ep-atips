@@ -1,10 +1,12 @@
 from blaster_tests import run_blaster_tests
+from chassis_tests import run_chassis_tests
 from led_tests import run_led_tests
 from robomaster_runtime import robot
 
 if __name__ == "__main__":
     run_led_tests()
     run_blaster_tests()
+    run_chassis_tests()
     ep_robot = robot.Robot()
     ep_robot.initialize(conn_type="ap")
 
