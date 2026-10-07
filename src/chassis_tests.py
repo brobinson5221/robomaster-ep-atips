@@ -1,12 +1,7 @@
 import time
 
-from robomaster_runtime import robot
 
-
-def run_chassis_tests():
-
-    ep_robot = robot.Robot()
-    ep_robot.initialize(conn_type="ap")
+def run_chassis_tests(ep_robot):
 
     ep_chassis = ep_robot.chassis
     ep_chassis.drive_speed(x=-1.0, y=0, z=0)
