@@ -12,12 +12,14 @@ def run_distance_sensor_tests(ep_robot):
         sensor_value_list.append(sensor_value)
 
     ep_sensor = ep_robot.sensor
-    ep_sensor.sub_distance(freq=5, callback=distance_callback)
+    ep_chassis = ep_robot.chassis
+    ep_sensor.sub_distance(freq=1, callback=distance_callback)
     try:
-        time.sleep(10)
+        time.sleep(1)
         if sensor_value is not None:
             print(f"Latest distance: {sensor_value} mm")
             print(f"Sensor value list: {sensor_value_list}")
+            #ep_chassis.move(x=sensor_value, y=0, z=0, xy_speed=0.1).wait_for_completed()
         else:
             print("No distance reading available.")
     finally:
