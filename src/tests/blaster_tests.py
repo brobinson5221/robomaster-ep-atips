@@ -1,6 +1,4 @@
-from robomaster import blaster
-
-from robomaster_runtime import robot
+from src.robomaster_runtime import robot
 
 
 def run_blaster_tests():
