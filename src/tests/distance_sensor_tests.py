@@ -33,10 +33,7 @@ def read_distance(ep_robot, timeout=5):
 def run_distance_sensor_tests(ep_robot):
     sensor_value = read_distance(ep_robot)
     # Check against None
-    while sensor_value > 200 or sensor_value is not None:  # noqa: PLR2004
-        sensor_value = read_distance(ep_robot)
-        if sensor_value is not None:
-            print(f"Distance: {sensor_value} mm")
-        else:
-            print("No distance reading available.")
-        print("hi")
+    if sensor_value is not None:
+        print(f"Distance: {sensor_value} mm")
+    else:
+        print("No distance reading available.")

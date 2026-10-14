@@ -1,6 +1,8 @@
 # from blaster_tests import run_blaster_tests
 # from chassis_tests import run_chassis_tests
 # from led_tests import run_led_tests
+import time
+
 from robomaster_runtime import robot
 from tests.distance_sensor_tests import read_distance
 
@@ -13,15 +15,20 @@ if __name__ == "__main__":
         print(f"Robot version: {ep_robot.get_version()}")
         print(f"Robot SN: {ep_robot.get_sn()}")
 
-        ep_robot.set_robot_mode(mode=robot.GIMBAL_LEAD)
+        ep_robot.set_robot_mode(mode=robot.CHASSIS_LEAD)
         x = read_distance(ep_robot)
-        while x > 200 or x is not None:  # noqa: PLR2004
+        y = x
+        while x > 400 or x is not None:  # noqa: PLR2004
             if x is not None:
                 print(f"Distance: {x} mm")
-                ep_chassis.drive_speed(x=-0.05, y=0, z=0)
+                ep_chassis.drive_speed(x=-0.1, y=0, z=0)
             else:
                 print("No distance reading available.")
             x = read_distance(ep_robot)
-        ep_chassis.drive_speed(x=0, y=0, z=60)
+            if x < 400:
+                #ep_chassis.drive_speed(x=0, y=0, z=60)
+                ep_chassis.drive_speed(x=0, y=0, z=60)
+                time.sleep(3)
+                break
     finally:
         ep_robot.close()
