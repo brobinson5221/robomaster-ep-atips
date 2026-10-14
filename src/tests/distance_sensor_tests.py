@@ -1,33 +1,39 @@
-import time
+from threading import Event
+
+
+def read_distance(ep_robot, timeout=5):
+    """Return the first sensor's next distance in mm, or None on timeout."""
+    sensor_value = None
+    # The callback signals this event when a reading is available.
+    reading_ready = Event()
+
+    def distance_callback(distance):
+        # Update the variable in read_distance()
+        nonlocal sensor_value
+        # Keep only the first reading
+        if sensor_value is None:
+            # Get the first sensor's distance in mm.
+            sensor_value = distance[0]
+            reading_ready.set()
+
+    ep_sensor = ep_robot.sensor
+    # Request distance updates once per second.
+    ep_sensor.sub_distance(freq=1, callback=distance_callback)
+    try:
+        # Wait without polling, up to timeout seconds.
+        if reading_ready.wait(timeout):
+            return sensor_value
+        # No reading arrived before the timeout.
+        return None
+    finally:
+        # Stop updates whether we received a reading or timed out.
+        ep_sensor.unsub_distance()
 
 
 def run_distance_sensor_tests(ep_robot):
-    sensor_value = None
-    sensor_value_list = []
-
-    def distance_callback(distance):
-        nonlocal sensor_value
-        sensor_value = distance[0]
-        print(f"Distance callback triggered: {sensor_value} mm")
-        sensor_value_list.append(sensor_value)
-
-    ep_sensor = ep_robot.sensor
-    # ep_chassis = ep_robot.chassis
-    ep_sensor.sub_distance(freq=1, callback=distance_callback)
-    try:
-        # Set a deadline for 5 seconds from now
-        deadline = time.monotonic() + 5
-        # Wait until we get a sensor value or the deadline is reached
-        while sensor_value is None and time.monotonic() < deadline:
-            # Wait for a short period to avoid busy waiting
-            time.sleep(0.05)
-        if sensor_value is not None:
-            print(f"Latest distance: {sensor_value} mm")
-            print(f"Sensor value list: {sensor_value_list}")
-            # ep_chassis.move(x=sensor_value, y=0, z=0, xy_speed=0.1).wait_for_completed()
-        else:
-            print("No distance reading available.")
-    finally:
-        # Unsubscribe from the distance sensor to clean up resources
-        if sensor_value is not None:
-            ep_sensor.unsub_distance()
+    sensor_value = read_distance(ep_robot)
+    # Check against None
+    if sensor_value is not None:
+        print(f"Distance: {sensor_value} mm")
+    else:
+        print("No distance reading available.")
