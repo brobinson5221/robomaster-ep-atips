@@ -11,22 +11,23 @@ if __name__ == "__main__":
     ep_robot.initialize(conn_type="ap")
     ep_chassis = ep_robot.chassis
 
+    DISTANCE_LIMIT = 400  # mm
+
     try:
         print(f"Robot version: {ep_robot.get_version()}")
         print(f"Robot SN: {ep_robot.get_sn()}")
 
         ep_robot.set_robot_mode(mode=robot.CHASSIS_LEAD)
-        x = read_distance(ep_robot)
-        y = x
-        while x > 400 or x is not None:  # noqa: PLR2004
-            if x is not None:
-                print(f"Distance: {x} mm")
+        current_distance = read_distance(ep_robot)
+        while current_distance is not None and current_distance > DISTANCE_LIMIT:
+            if current_distance is not None:
+                print(f"Distance: {current_distance} mm")
                 ep_chassis.drive_speed(x=-0.1, y=0, z=0)
             else:
                 print("No distance reading available.")
-            x = read_distance(ep_robot)
-            if x < 400:
-                #ep_chassis.drive_speed(x=0, y=0, z=60)
+            current_distance = read_distance(ep_robot)
+            if current_distance is not None and current_distance < DISTANCE_LIMIT:
+                # ep_chassis.drive_speed(x=0, y=0, z=60)
                 ep_chassis.drive_speed(x=0, y=0, z=60)
                 time.sleep(3)
                 break
