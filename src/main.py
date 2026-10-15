@@ -19,10 +19,12 @@ if __name__ == "__main__":
 
         ep_robot.set_robot_mode(mode=robot.CHASSIS_LEAD)
         current_distance = read_distance(ep_robot)
+        counter = 0
         while current_distance is not None and current_distance > DISTANCE_LIMIT:
             if current_distance is not None:
                 print(f"Distance: {current_distance} mm")
                 ep_chassis.drive_speed(x=-0.1, y=0, z=0)
+                counter += 1
             else:
                 print("No distance reading available.")
             current_distance = read_distance(ep_robot)
@@ -31,5 +33,10 @@ if __name__ == "__main__":
                 ep_chassis.drive_speed(x=0, y=0, z=60)
                 time.sleep(3)
                 break
+        while counter > 0:
+            ep_chassis.drive_speed(x=-0.1, y=0, z=0)
+            counter -= 1
+            print(f"Returning to original position, steps remaining: {counter}")
+            time.sleep(1)
     finally:
         ep_robot.close()
