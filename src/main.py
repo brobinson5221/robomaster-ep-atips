@@ -6,12 +6,12 @@ import time
 from robomaster_runtime import robot
 from tests.distance_sensor_tests import read_distance
 
-if __name__ == "__main__":
+DISTANCE_LIMIT = 400
+
+def main():
     ep_robot = robot.Robot()
     ep_robot.initialize(conn_type="ap")
     ep_chassis = ep_robot.chassis
-
-    DISTANCE_LIMIT = 400  # mm
 
     try:
         print(f"Robot version: {ep_robot.get_version()}")
@@ -33,3 +33,6 @@ if __name__ == "__main__":
                 break
     finally:
         ep_robot.close()
+
+if __name__ == "__main__":
+    main()
