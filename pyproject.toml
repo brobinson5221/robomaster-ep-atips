@@ -2,7 +2,10 @@
 name = "robomaster-ep-atips"
 version = "0.1.0"
 requires-python = ">=3.8"
-dependencies = ["robomaster"]
+dependencies = [
+    "matplotlib>=3.7.5",
+    "robomaster",
+]
 
 [dependency-groups]
 dev = ["commitizen", "pre-commit", "ruff", "setuptools>=75.3.4"]

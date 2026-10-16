@@ -4,9 +4,11 @@
 import time
 
 from robomaster_runtime import robot
+from sensor_mapping.data_collecting import collect_data, plot_data
 from tests.distance_sensor_tests import read_distance
 
 DISTANCE_LIMIT = 400
+
 
 def main():
     ep_robot = robot.Robot()
@@ -33,6 +35,9 @@ def main():
                 break
     finally:
         ep_robot.close()
+    measurements = collect_data(ep_robot)
+    plot_data(measurements)
+
 
 if __name__ == "__main__":
     main()
