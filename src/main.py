@@ -10,6 +10,8 @@ if __name__ == "__main__":
     ep_robot = robot.Robot()
     ep_robot.initialize(conn_type="ap")
     ep_chassis = ep_robot.chassis
+    ep_blaster = ep_robot.blaster
+    ep_gimbal = ep_robot.gimbal
 
     DISTANCE_LIMIT = 400  # mm
 
@@ -20,6 +22,7 @@ if __name__ == "__main__":
         ep_robot.set_robot_mode(mode=robot.CHASSIS_LEAD)
         current_distance = read_distance(ep_robot)
         counter = 0
+        ep_gimbal.suspend()
         while current_distance is not None and current_distance > DISTANCE_LIMIT:
             if current_distance is not None:
                 print(f"Distance: {current_distance} mm")
@@ -33,10 +36,17 @@ if __name__ == "__main__":
                 ep_chassis.drive_speed(x=0, y=0, z=60)
                 time.sleep(3)
                 break
+        counter -= 1
         while counter > 0:
             ep_chassis.drive_speed(x=-0.1, y=0, z=0)
             counter -= 1
             print(f"Returning to original position, steps remaining: {counter}")
             time.sleep(1)
+        ep_chassis.drive_speed(x=0, y=0, z=30)
+        time.sleep(3)
+        ep_blaster.fire(times=2)
+        ep_chassis.drive_speed(x=0, y=0, z=-60)
+        time.sleep(3)
+        ep_blaster.fire(times=2)
     finally:
         ep_robot.close()
