@@ -1,6 +1,6 @@
 import time
 
-from distance_sensor_tests import read_distance
+from tests.distance_sensor_tests import read_distance
 
 DISTANCE_LIMIT = 400  # mm
 
@@ -22,10 +22,8 @@ def run_chassis_tests_with_blaster(ep_robot):
 
     ep_chassis = ep_robot.chassis
     ep_blaster = ep_robot.blaster
-    ep_gimbal = ep_robot.gimbal
     current_distance = read_distance(ep_robot)
     counter = 0
-    ep_gimbal.suspend()
     while current_distance is not None and current_distance > DISTANCE_LIMIT:
         if current_distance is not None:
             print(f"Distance: {current_distance} mm")
