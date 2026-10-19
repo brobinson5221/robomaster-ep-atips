@@ -11,8 +11,8 @@ DISTANCE_MIN = 100
 
 def collect_data(ep_robot):
     measurements = []
-
     ep_gimbal = ep_robot.gimbal
+
     for angle in range(-180, 180, 5):
         ep_gimbal.moveto(pitch=0, yaw=angle).wait_for_completed()
 
