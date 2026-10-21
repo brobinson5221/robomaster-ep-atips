@@ -1,11 +1,9 @@
-# from blaster_tests import run_blaster_tests
-# from chassis_tests import run_chassis_tests
 # from led_tests import run_led_tests
-
 from robomaster_runtime import robot
 from sensor_mapping.data_collecting import collect_data, plot_data
+from tests.chassis_tests import run_chassis_tests_with_blaster
 
-DISTANCE_LIMIT = 400
+DISTANCE_LIMIT = 403
 
 
 def main():
@@ -15,10 +13,11 @@ def main():
     try:
         print(f"Robot version: {ep_robot.get_version()}")
         print(f"Robot SN: {ep_robot.get_sn()}")
-        ep_robot.set_robot_mode(mode=robot.FREE)
+        ep_robot.set_robot_mode(mode=robot.CHASSIS_LEAD)
         ep_robot.gimbal.moveto(pitch=0, yaw=0).wait_for_completed()
-        measurements = collect_data(ep_robot)
-        plot_data(measurements)
+        #measurements = collect_data(ep_robot)
+        #plot_data(measurements)
+        run_chassis_tests_with_blaster(ep_robot)
     finally:
         ep_robot.close()
 
