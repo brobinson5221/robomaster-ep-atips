@@ -1,8 +1,9 @@
 import time
 
+from robomaster import led
+
 from robomaster_runtime import robot
 from tests.distance_sensor_tests import read_distance
-from robomaster import led
 
 DISTANCE_LIMIT = 360  # mm
 
