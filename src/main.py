@@ -20,7 +20,7 @@ def main():
         run_chassis_tests_with_blaster(ep_robot)
         measurements = collect_data(ep_robot)
         plot_data(measurements)
-        ep_led.set_led(comp=led.COMP_ALL, r=255, g=255, b=255, effect=led.EFFECT_ON)
+        ep_led.set_led(comp=led.COMP_ALL, r=255, g=255, b=0, effect=led.EFFECT_ON)
         shoot_nearest_target(ep_robot, measurements)
     finally:
         ep_robot.close()
