@@ -2,6 +2,7 @@ import time
 
 from robomaster_runtime import robot
 from tests.distance_sensor_tests import read_distance
+from robomaster import led
 
 DISTANCE_LIMIT = 360  # mm
 
@@ -24,9 +25,11 @@ def run_chassis_tests_with_blaster(ep_robot):
     ep_chassis = ep_robot.chassis
     ep_gimbal = ep_robot.gimbal
     ep_blaster = ep_robot.blaster
+    ep_led = ep_robot.led
     current_distance = read_distance(ep_robot)
     time.sleep(1)  # Allow time for the distance sensor to stabilize
     counter = 0
+    ep_led.set_led(comp=led.COMP_ALL, r=255, g=0, b=0, effect=led.EFFECT_ON)
     while current_distance is not None and current_distance > DISTANCE_LIMIT:
         if current_distance is not None:
             print(f"Distance: {current_distance} mm")
@@ -52,10 +55,12 @@ def run_chassis_tests_with_blaster(ep_robot):
             ep_robot.set_robot_mode(mode=robot.CHASSIS_LEAD)
             time.sleep(1)
             break
-    counter -= 1
     #ep_gimbal.moveto(pitch=0, yaw=90).wait_for_completed()
+    ep_led.set_led(comp=led.COMP_ALL, r=0, g=255, b=0, effect=led.EFFECT_ON)
     while counter > 0:
         ep_chassis.drive_speed(x=0.1, y=0, z=0)
         counter -= 1
         print(f"Returning to original position, steps remaining: {counter}")
         time.sleep(1)
+    ep_led.set_led(comp=led.COMP_ALL, r=0, g=0, b=255, effect=led.EFFECT_ON)
+    ep_chassis.drive_speed(x=0, y=0, z=0)
