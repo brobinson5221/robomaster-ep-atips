@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.markers import MarkerStyle
 from matplotlib.projections.polar import PolarAxes
 
+from robomaster_runtime import robot
 from tests.distance_sensor_tests import read_distance
 
 DISTANCE_MAX = 4000
@@ -14,6 +15,7 @@ MAX_RANGE_JUMP_MM = 300
 
 
 def collect_data(ep_robot):
+    ep_robot.set_robot_mode(mode=robot.FREE)
     measurements = []
     ep_gimbal = ep_robot.gimbal
 
@@ -79,5 +81,5 @@ def plot_data(measurements):
 def shoot_nearest_target(ep_robot, measurements):
     if measurements:
         nearest_angle, _ = min(measurements, key=lambda measurement: measurement[1])
-        ep_robot.gimbal.moveto(pitch=0, yaw=nearest_angle).wait_for_completed()
+        ep_robot.gimbal.moveto(pitch=20, yaw=nearest_angle).wait_for_completed()
         ep_robot.blaster.fire(times=1)

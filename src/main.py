@@ -22,6 +22,7 @@ def main():
         measurements = collect_data(ep_robot)
         plot_data(measurements)
         ep_led.set_led(comp=led.COMP_ALL, r=255, g=255, b=0, effect=led.EFFECT_ON)
+        ep_robot.gimbal.moveto(pitch=0, yaw=0).wait_for_completed()
         shoot_nearest_target(ep_robot, measurements)
     finally:
         ep_robot.close()
