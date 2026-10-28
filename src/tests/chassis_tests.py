@@ -44,7 +44,7 @@ def run_chassis_tests_with_blaster(ep_robot):
             time.sleep(1)
             ep_robot.set_robot_mode(mode=robot.FREE)
             time.sleep(1)
-            ep_gimbal.moveto(pitch=0, yaw=90).wait_for_completed()
+            ep_gimbal.moveto(pitch=10, yaw=90).wait_for_completed()
             time.sleep(1)
             ep_blaster.fire(times=1)
             time.sleep(2)
